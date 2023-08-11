@@ -51,4 +51,26 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Resources\Images\home32.svg" />
+	  <None Remove="Resources\Images\reports32.svg" />
+	  <None Remove="Resources\Images\setting32.svg" />
+	  <None Remove="Modules\" />
+	  <None Remove="Modules\AppSettings\" />
+	  <None Remove="Modules\AppSettings\ViewModels\" />
+	  <None Remove="Global\" />
+	  <None Remove="Modules\AppSettings\Views\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="Resources\Images\home32.svg" />
+	  <BundleResource Include="Resources\Images\reports32.svg" />
+	  <BundleResource Include="Resources\Images\setting32.svg" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Modules\" />
+	  <Folder Include="Modules\AppSettings\" />
+	  <Folder Include="Modules\AppSettings\ViewModels\" />
+	  <Folder Include="Global\" />
+	  <Folder Include="Modules\AppSettings\Views\" />
+	</ItemGroup>
 </Project>
