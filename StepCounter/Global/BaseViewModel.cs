@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+
 namespace StepCounter.Global
 {
     public class BaseViewModel : INotifyPropertyChanged
