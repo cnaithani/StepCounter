@@ -1,4 +1,7 @@
-﻿namespace StepCounter;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using StepCounter.Global;
+
+namespace StepCounter;
 
 public partial class MainPage : ContentPage
 {
@@ -7,7 +10,13 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
-	}
+
+        WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
+        {
+            CounterBtn.Text = $"Steps {e.Steps} ";
+        });
+
+    }
 
 	private void OnCounterClicked(object sender, EventArgs e)
 	{

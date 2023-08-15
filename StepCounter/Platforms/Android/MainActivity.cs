@@ -3,6 +3,8 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using AndroidX.ConstraintLayout.Core.Motion.Utils;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using StepCounter.Global;
 using StepCounter.Platforms.Android.Services;
 
 namespace StepCounter;
@@ -11,6 +13,9 @@ namespace StepCounter;
 public class MainActivity : MauiAppCompatActivity
 {
     public static MainActivity Instance { get; private set; }
+    public StepService SetpService { get;  set; }
+
+    private Intent stepService;
 
     protected override void OnCreate(Bundle savedInstanceState)
     {
@@ -34,7 +39,7 @@ public class MainActivity : MauiAppCompatActivity
                 return;
 
             //trigger UI refresh on first bind
-            HandlePropertyChanged(null, new System.ComponentModel.PropertyChangedEventArgs("StepsToday"));
+            HandlePropertyChanged(null, new System.ComponentModel.PropertyChangedEventArgs("Steps"));
 
             if (registered)
                 binder.StepService.PropertyChanged -= HandlePropertyChanged;
@@ -50,8 +55,8 @@ public class MainActivity : MauiAppCompatActivity
 
         try
         {
-            var service = new Intent(this, typeof(StepService));
-            var componentName = StartService(service);
+            stepService = new Intent(this, typeof(StepService));
+            var componentName = StartService(stepService);
         }
         catch (Exception ex)
         {
@@ -65,8 +70,9 @@ public class MainActivity : MauiAppCompatActivity
         base.OnStart();
 
         //TODO - Check
-        //if (!firstRun)
-        StartStepService();
+
+        if (stepService == null)
+            StartStepService();
 
         if (IsBound)
             return;
@@ -88,10 +94,11 @@ public class MainActivity : MauiAppCompatActivity
 
     void HandlePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != "StepsToday")
+        if (e.PropertyName != "Steps")
             return;
 
         //TODO - Check
+        WeakReferenceMessenger.Default.Send(new StepStepUpdateMsg { Steps = SetpService.Steps});
         //UpdateUI();
     }
 }

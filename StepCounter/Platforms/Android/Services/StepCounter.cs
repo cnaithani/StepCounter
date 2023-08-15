@@ -14,6 +14,7 @@ namespace StepCounter.Platforms.Android.Services
     {
         private int StepsCounter = 0;
         private SensorManager sManager;
+        public IBinder Binder { get; private set; }
 
         public int Steps
         {
@@ -25,7 +26,9 @@ namespace StepCounter.Platforms.Android.Services
         //TODO - Check
         public override IBinder OnBind(Intent intent)
         {
-            return null;
+            this.Binder = new StepServiceBinder(this);
+            MainActivity.Instance.SetpService = this;
+            return this.Binder;
         }
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
