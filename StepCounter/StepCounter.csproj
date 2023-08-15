@@ -60,6 +60,7 @@
 	  <None Remove="Modules\AppSettings\ViewModels\" />
 	  <None Remove="Global\" />
 	  <None Remove="Modules\AppSettings\Views\" />
+	  <None Remove="Platforms\Android\Services\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\home32.svg" />
@@ -72,5 +73,6 @@
 	  <Folder Include="Modules\AppSettings\ViewModels\" />
 	  <Folder Include="Global\" />
 	  <Folder Include="Modules\AppSettings\Views\" />
+	  <Folder Include="Platforms\Android\Services\" />
 	</ItemGroup>
 </Project>

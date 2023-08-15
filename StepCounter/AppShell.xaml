@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:StepCounter"
+    xmlns:s="clr-namespace:StepCounter.Modules.AppSettings.Views"
     Shell.FlyoutBehavior="Disabled"
     BackgroundColor="{AppThemeBinding Light={StaticResource AppColorL}, Dark={StaticResource AppColorD}}">
 
@@ -16,7 +17,7 @@
             <ShellContent  Title="Pie Chart" ContentTemplate="{DataTemplate local:MainPage}"/>
         </Tab>
         <Tab Icon="setting32.png"  Title="Settings">
-            <ShellContent  Title="Settings" ContentTemplate="{DataTemplate local:MainPage}"/>
+            <ShellContent  Title="Settings" ContentTemplate="{DataTemplate s:AppSettings}"/>
         </Tab>
     </TabBar>
 

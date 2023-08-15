@@ -1,9 +1,23 @@
-﻿namespace StepCounter.Modules.AppSettings.Views;
+﻿using StepCounter.Modules.AppSettings.ViewModels;
+
+namespace StepCounter.Modules.AppSettings.Views;
 
 public partial class AppSettings : ContentPage
 {
-	public AppSettings()
-	{
-		InitializeComponent();
-	}
+    public AppSettingsVM currentVM;
+    public AppSettings()
+    {
+        InitializeComponent();
+    }
+
+    protected override void OnAppearing()
+    {
+        currentVM = new AppSettingsVM();
+        BindingContext = currentVM;
+    }
+
+    void Ok_Clicked(System.Object sender, System.EventArgs e)
+    {
+        (App.Current.MainPage as Shell).GoToAsync("//Main/Home", true);
+    }
 }
