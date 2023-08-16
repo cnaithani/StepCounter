@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Android.App;
+using AndroidApp = Android.App.Application;
 using Android.Content;
 using Android.Content.PM;
 using Android.Hardware;
@@ -23,12 +24,49 @@ namespace StepCounter.Platforms.Android.Services
         }
 
         #region Service Methods
-        //TODO - Check
         public override IBinder OnBind(Intent intent)
         {
+            //InitSensorService();
+
             this.Binder = new StepServiceBinder(this);
             MainActivity.Instance.SetpService = this;
+
+            //Debug
+            ToggleAccelerometer();
+            //var startTimeSpan = TimeSpan.Zero;
+            //var periodTimeSpan = TimeSpan.FromSeconds(30);
+
+            //var timer = new System.Threading.Timer((e) =>
+            //{
+            //    OnSensorChangedDebug();
+            //}, null, startTimeSpan, periodTimeSpan);
+
+
             return this.Binder;
+        }
+        public void ToggleAccelerometer()
+        {
+            if (Accelerometer.Default.IsSupported)
+            {
+                if (!Accelerometer.Default.IsMonitoring)
+                {
+                    // Turn on accelerometer
+                    Accelerometer.Default.ReadingChanged += Accelerometer_ReadingChanged;
+                    Accelerometer.Default.Start(SensorSpeed.UI);
+                }
+                else
+                {
+                    // Turn off accelerometer
+                    Accelerometer.Default.Stop();
+                    Accelerometer.Default.ReadingChanged -= Accelerometer_ReadingChanged;
+                }
+            }
+        }
+
+        private void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
+        {
+            StepsCounter++;
+            OnPropertyChanged(nameof(StepsCounter));
         }
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
@@ -45,9 +83,8 @@ namespace StepCounter.Platforms.Android.Services
 
         public void InitSensorService()
         {
-            sManager = MainActivity.Instance.GetSystemService(Context.SensorService) as SensorManager;
-            sManager.RegisterListener(this, sManager.GetDefaultSensor(SensorType.StepCounter), SensorDelay.Normal);
-
+            sManager = AndroidApp.Context.GetSystemService(Context.SensorService) as SensorManager;
+            sManager.RegisterListener(this, sManager.GetDefaultSensor(SensorType.Accelerometer), SensorDelay.Normal);
         }
 
         public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
@@ -55,10 +92,16 @@ namespace StepCounter.Platforms.Android.Services
             Console.WriteLine("OnAccuracyChanged called");
         }
 
-        public void OnSensorChanged(SensorEvent e)
+        public void OnSensorChangedDebug()
+        {
+            StepsCounter++; StepsCounter++; StepsCounter++;
+            OnPropertyChanged(nameof(StepsCounter));
+        }
+
+        public void OnSensorChanged(SensorEvent e) 
         {
             StepsCounter++;
-            Console.WriteLine(e.ToString());
+            OnPropertyChanged(nameof(StepsCounter));
         }
 
         public void StopSensorService()
@@ -68,8 +111,8 @@ namespace StepCounter.Platforms.Android.Services
 
         public bool IsAvailable()
         {
-            return MainActivity.Instance.PackageManager.HasSystemFeature(PackageManager.FeatureSensorStepCounter) &&
-                MainActivity.Instance.PackageManager.HasSystemFeature(PackageManager.FeatureSensorStepDetector);
+            return AndroidApp.Context.PackageManager.HasSystemFeature(PackageManager.FeatureSensorStepCounter) &&
+                AndroidApp.Context.PackageManager.HasSystemFeature(PackageManager.FeatureSensorStepDetector);
         }
 
         #region INotifyPropertyChanged implementation
