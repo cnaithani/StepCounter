@@ -7,15 +7,23 @@ using Android.Content.PM;
 using Android.Hardware;
 using Android.OS;
 using Android.Runtime;
+using Android.Nfc;
+using Android.Util;
+using AndroidX.LocalBroadcastManager.Content;
+using Java.Util.Logging;
+using Handler = Android.OS.Handler;
 
 namespace StepCounter.Platforms.Android.Services
 {
     [Service(Enabled = true)]
-    public class StepService :Service, ISensorEventListener, INotifyPropertyChanged
+    public class StepService :Service, INotifyPropertyChanged
     {
         private int StepsCounter = 0;
-        private SensorManager sManager;
         public IBinder Binder { get; private set; }
+        Action runnableLog;
+        Handler handler;
+        Action runnableNotification;
+        volatile bool canRun;
 
         public int Steps
         {
@@ -24,26 +32,52 @@ namespace StepCounter.Platforms.Android.Services
         }
 
         #region Service Methods
+        public override void OnCreate()
+        {
+            base.OnCreate();
+
+            handler = new Handler(Looper.MainLooper);
+        }
         public override IBinder OnBind(Intent intent)
         {
-            //InitSensorService();
-
             this.Binder = new StepServiceBinder(this);
             MainActivity.Instance.SetpService = this;
 
             //Debug
             ToggleAccelerometer();
-            //var startTimeSpan = TimeSpan.Zero;
-            //var periodTimeSpan = TimeSpan.FromSeconds(30);
-
-            //var timer = new System.Threading.Timer((e) =>
-            //{
-            //    OnSensorChangedDebug();
-            //}, null, startTimeSpan, periodTimeSpan);
-
 
             return this.Binder;
         }
+        
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+            //runnableLog = new Action(() =>
+            //{
+            //    if (handler == null) return;
+            //    OnPropertyChanged("Steps");
+            //    handler.PostDelayed(runnableLog, 1000);
+            //});
+
+            StartTimer(TimeSpan.FromSeconds(10), () => {  return true; });
+            return StartCommandResult.Sticky;
+        }
+
+        public void StartTimer(TimeSpan interval, Func<bool> callback)
+        {
+            var handler = new Handler(Looper.MainLooper);
+            handler.PostDelayed(() =>
+            {
+                OnPropertyChanged("Steps");
+                if (callback())
+                    StartTimer(interval, callback);
+
+                handler.Dispose();
+                handler = null;
+            }, (long)interval.TotalMilliseconds);
+        }
+
+        #endregion
+
         public void ToggleAccelerometer()
         {
             if (Accelerometer.Default.IsSupported)
@@ -52,7 +86,7 @@ namespace StepCounter.Platforms.Android.Services
                 {
                     // Turn on accelerometer
                     Accelerometer.Default.ReadingChanged += Accelerometer_ReadingChanged;
-                    Accelerometer.Default.Start(SensorSpeed.UI);
+                    Accelerometer.Default.Start(SensorSpeed.Game);
                 }
                 else
                 {
@@ -65,54 +99,20 @@ namespace StepCounter.Platforms.Android.Services
 
         private void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
-            StepsCounter++;
-            OnPropertyChanged(nameof(StepsCounter));
-        }
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
-        {
-            return StartCommandResult.Sticky;
-        }
+            
+            float x = e.Reading.Acceleration.X;
+            float y = e.Reading.Acceleration.Y;
+            float z = e.Reading.Acceleration.Z;
 
-        #endregion
-
-        public new void Dispose()
-        {
-            sManager.UnregisterListener(this);
-            sManager.Dispose();
-        }
-
-        public void InitSensorService()
-        {
-            sManager = AndroidApp.Context.GetSystemService(Context.SensorService) as SensorManager;
-            sManager.RegisterListener(this, sManager.GetDefaultSensor(SensorType.Accelerometer), SensorDelay.Normal);
-        }
-
-        public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
-        {
-            Console.WriteLine("OnAccuracyChanged called");
-        }
-
-        public void OnSensorChangedDebug()
-        {
-            StepsCounter++; StepsCounter++; StepsCounter++;
-            OnPropertyChanged(nameof(StepsCounter));
-        }
-
-        public void OnSensorChanged(SensorEvent e) 
-        {
-            StepsCounter++;
-            OnPropertyChanged(nameof(StepsCounter));
-        }
-
-        public void StopSensorService()
-        {
-            sManager.UnregisterListener(this);
-        }
-
-        public bool IsAvailable()
-        {
-            return AndroidApp.Context.PackageManager.HasSystemFeature(PackageManager.FeatureSensorStepCounter) &&
-                AndroidApp.Context.PackageManager.HasSystemFeature(PackageManager.FeatureSensorStepDetector);
+            var currentvectorSum = (x* x + y* y + z* z);
+            bool inStep= false;
+            if (currentvectorSum< 1 && inStep==false){
+                inStep = true;
+            }
+            if(currentvectorSum > 1.25 && inStep==true){
+                inStep = false;
+                StepsCounter++;
+            }
         }
 
         #region INotifyPropertyChanged implementation
