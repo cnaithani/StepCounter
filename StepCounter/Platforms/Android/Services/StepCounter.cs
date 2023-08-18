@@ -96,23 +96,35 @@ namespace StepCounter.Platforms.Android.Services
                 }
             }
         }
-
-        private void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
+        bool inStep= false;
+        //List<double> values = new List<decimal>();
+        private async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
-            
+            if (inStep == true)
+                return;
+
+            inStep = true;
+
             float x = e.Reading.Acceleration.X;
             float y = e.Reading.Acceleration.Y;
             float z = e.Reading.Acceleration.Z;
 
-            var currentvectorSum = (x* x + y* y + z* z);
-            bool inStep= false;
-            if (currentvectorSum< 1 && inStep==false){
-                inStep = true;
-            }
-            if(currentvectorSum > 1.25 && inStep==true){
+            if (x==0 || y==0 || z==0)
+            {
                 inStep = false;
-                StepsCounter++;
+                return;
             }
+
+            var currentvectorSum = Math.Sqrt(x* x + y* y + z* z);
+           
+            if(currentvectorSum > 1.45){
+                //values.Add(currentvectorSum);
+                //StepsCounter = values.Average();
+
+                StepsCounter++;
+                await Task.Delay(200);
+            }
+            inStep = false;
         }
 
         #region INotifyPropertyChanged implementation
