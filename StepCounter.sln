@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepCounter", "StepCounter\StepCounter.csproj", "{D10666B2-F9EC-4CF9-BF10-1D6B8DD5E437}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.Maui.Pedometer", "Plugin.Maui.Pedometer\src\Plugin.Maui.Pedometer\Plugin.Maui.Pedometer.csproj", "{A8034809-679E-4E03-B992-8C64C61652C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,6 +18,10 @@ Global
 		{D10666B2-F9EC-4CF9-BF10-1D6B8DD5E437}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{D10666B2-F9EC-4CF9-BF10-1D6B8DD5E437}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D10666B2-F9EC-4CF9-BF10-1D6B8DD5E437}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8034809-679E-4E03-B992-8C64C61652C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8034809-679E-4E03-B992-8C64C61652C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8034809-679E-4E03-B992-8C64C61652C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8034809-679E-4E03-B992-8C64C61652C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

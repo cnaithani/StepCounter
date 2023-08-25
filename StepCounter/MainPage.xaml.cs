@@ -7,23 +7,26 @@ namespace StepCounter;
 public partial class MainPage : ContentPage
 {
 	int count = 0;
-    readonly IPedometer pedometer;
+    public MainPageVM currentVM;
 
-    public MainPage(IPedometer pedometer)
+    public MainPage()
 	{
 		InitializeComponent();
 
-        //WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
-        //{
-        //    CounterBtn.Text = $"Steps {e.Steps} ";
-        //});
-
-        this.pedometer = pedometer;
-        StartCounting();
+        WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
+        {
+            CounterBtn.Text = "Steps: " + e.Steps.ToString();
+        });
 
     }
 
-	private void OnCounterClicked(object sender, EventArgs e)
+    protected override void OnAppearing()
+    {
+        currentVM = new MainPageVM();
+        BindingContext = currentVM;
+    }
+
+    private void OnCounterClicked(object sender, EventArgs e)
 	{
 		//count++;
 
@@ -35,16 +38,6 @@ public partial class MainPage : ContentPage
 		//SemanticScreenReader.Announce(CounterBtn.Text);
 
 	}
-
-    public void StartCounting()
-    {
-        pedometer.ReadingChanged += (sender, reading) =>
-        {
-            CounterBtn.Text = $"Steps: {reading.NumberOfSteps.ToString()}";
-        };
-
-        pedometer.Start();
-    }
 }
 
 
