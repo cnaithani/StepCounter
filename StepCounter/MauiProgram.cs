@@ -22,6 +22,14 @@ public static class MauiProgram
 
         builder.Services.AddSingleton(Pedometer.Default);
 
+#if ANDROID
+#elif IOS
+#else
+	//builder.Services.AddSingleton(Pedometer.Default);
+#endif
+
+
+
 
         return builder.Build();
 	}

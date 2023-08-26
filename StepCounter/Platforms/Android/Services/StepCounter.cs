@@ -72,7 +72,7 @@ namespace StepCounter.Platforms.Android.Services
 
         public void ToggleAccelerometer()
         {
-            //Pedometer = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPedometer>();
+            Pedometer = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPedometer>();
 
             //Pedometer.ReadingChanged += (sender, reading) =>
             //{

@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Content.PM;
 using Android.Hardware;
+using Android.OS;
 using Android.Runtime;
 using AndroidX.Core.App;
 using Microsoft.Maui.ApplicationModel;
@@ -34,7 +35,7 @@ partial class FeatureImplementation : Java.Lang.Object, IPedometer, ISensorEvent
 		}
 	}
 
-	public bool IsSupported => packageManager!.HasSystemFeature(PackageManager.FeatureSensorStepCounter);
+	public bool IsSupported => IsEmulator() || packageManager!.HasSystemFeature(PackageManager.FeatureSensorStepCounter);
 
 	public bool IsMonitoring { get; private set; }
 	public double TotalSteps { get { return total; } }
@@ -117,5 +118,10 @@ partial class FeatureImplementation : Java.Lang.Object, IPedometer, ISensorEvent
 		sensorManager?.UnregisterListener(this);
 
 		IsMonitoring = false;
+	}
+
+	public bool IsEmulator()
+	{
+		return (Build.Fingerprint!=null && Build.Fingerprint.Contains("generic")) || (Build.Hardware != null && Build.Hardware.Contains("ranchu"));
 	}
 }
