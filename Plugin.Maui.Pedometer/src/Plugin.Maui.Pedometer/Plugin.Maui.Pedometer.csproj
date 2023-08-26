@@ -17,8 +17,8 @@
 		<Authors>cnaithani</Authors>
 		<Copyright>Copyright © cnaithani</Copyright>
 		<IsPackable>True</IsPackable>
-		<PackageProjectUrl>https://github.com/cnaithani/Plugin.Maui.Pedometer</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/cnaithani/Plugin.Maui.Pedometer</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/cnaithani/StepCounter/tree/main/Plugin.Maui.Pedometer</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/cnaithani/StepCounter</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>dotnet-maui;maui;plugin;pedometer;step counter</PackageTags>
 		<IncludeSymbols>True</IncludeSymbols>
@@ -31,7 +31,9 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon></PackageIcon>
 	</PropertyGroup>
-
+	<PropertyGroup>
+		<Version>1.0.1</Version>
+	</PropertyGroup>
 	<!-- iOS & MacCatalyst -->
 	<ItemGroup Condition="$(TargetFramework.StartsWith('net')) == true AND $(TargetFramework.Contains('-ios')) != true AND $(TargetFramework.Contains('-maccatalyst')) != true ">
 		<Compile Remove="**\**\*.ios.cs" />
@@ -64,9 +66,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.1" PrivateAssets="all" IsImplicitlyDefined="true" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" IsImplicitlyDefined="true" />
 		<PackageReference Include="System.Management" Version="7.0.0" Condition="$(TargetFramework.Contains('-windows')) == true" />
 	</ItemGroup>
+	
 
 	<!-- Package additions -->
 

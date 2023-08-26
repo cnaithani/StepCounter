@@ -58,7 +58,7 @@ namespace StepCounter.Platforms.Android.Services
             var handler = new Handler(Looper.MainLooper);
             handler.PostDelayed(() =>
             {
-                //Steps = (int)Pedometer.;
+                Steps = (int)Pedometer.TotalSteps;
                 OnPropertyChanged("Steps");
                 if (callback())
                     StartTimer(interval, callback);
