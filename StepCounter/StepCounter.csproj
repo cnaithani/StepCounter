@@ -74,6 +74,9 @@
 	  <None Remove="Platforms\Android\Classes\" />
 	  <None Remove="Resources\Raw\AppSQLite.db3" />
 	  <None Remove="Models\" />
+	  <None Remove="Data\" />
+	  <None Remove="Interfaces\" />
+	  <None Remove="Classes\" />
 	  <None Remove="Resources\Raw\AppSQLite.db3-wal" />
 	  <None Remove="Resources\Raw\AppSQLite.db3-shm" />
 	</ItemGroup>
@@ -94,6 +97,9 @@
 	  <Folder Include="Platforms\Android\Services\" />
 	  <Folder Include="Platforms\Android\Classes\" />
 	  <Folder Include="Models\" />
+	  <Folder Include="Data\" />
+	  <Folder Include="Interfaces\" />
+	  <Folder Include="Classes\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Plugin.Maui.Pedometer\src\Plugin.Maui.Pedometer\Plugin.Maui.Pedometer.csproj" />

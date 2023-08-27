@@ -10,10 +10,12 @@ public partial class AppSettings : ContentPage
         InitializeComponent();
     }
 
-    protected override void OnAppearing()
+    protected override  void OnAppearing()
     {
         currentVM = new AppSettingsVM();
         BindingContext = currentVM;
+
+        currentVM.Initialte();
     }
 
     void Ok_Clicked(System.Object sender, System.EventArgs e)

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Plugin.Maui.Pedometer;
+using StepCounter.Interfaces;
+using StepCounter.Classes;
 
 namespace StepCounter;
 
@@ -28,10 +30,15 @@ public static class MauiProgram
 	//builder.Services.AddSingleton(Pedometer.Default);
 #endif
 
-
-
+        builder = RegisterAppServices(builder);
 
         return builder.Build();
 	}
+
+    public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
+    {
+        mauiAppBuilder.Services.AddSingleton<ICommonDeviceHelper, CommonDeviceHelper>();
+        return mauiAppBuilder;
+    }
 }
 

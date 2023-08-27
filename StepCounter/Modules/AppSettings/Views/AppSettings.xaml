@@ -12,6 +12,10 @@
                     <RowDefinition Height="2*"/>
                     <!--1-->
                     <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="2*"/>
+                    <!--3-->
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*"/>
@@ -32,6 +36,21 @@
                                                         VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
                     <Switch Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                             IsToggled="{Binding IsDarkTheme}" />
+
+
+                    <Label Grid.Row="2" Grid.ColumnSpan="3"
+                                                    Style="{StaticResource lblHeader2OnSurface}"
+                                                    VerticalTextAlignment="Center"
+                                                    FontAttributes="Bold"
+                                                    Text="Step Counter" />
+
+                    <Label Grid.Row="3" Grid.Column="0" Padding="0,0,20,0"
+                                                        Style="{StaticResource lblHeader3OnSurface}"
+                                                        Text="Target for Day"
+                                                        VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+                           Style="{StaticResource lblHeader2OnSurface}"
+                           Text="{Binding Target}" />
 
 
 
