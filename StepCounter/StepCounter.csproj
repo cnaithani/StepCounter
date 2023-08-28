@@ -77,16 +77,12 @@
 	  <None Remove="Data\" />
 	  <None Remove="Interfaces\" />
 	  <None Remove="Classes\" />
-	  <None Remove="Resources\Raw\AppSQLite.db3-wal" />
-	  <None Remove="Resources\Raw\AppSQLite.db3-shm" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\home32.svg" />
 	  <BundleResource Include="Resources\Images\reports32.svg" />
 	  <BundleResource Include="Resources\Images\setting32.svg" />
 	  <BundleResource Include="Resources\Raw\AppSQLite.db3" />
-	  <BundleResource Include="Resources\Raw\AppSQLite.db3-wal" />
-	  <BundleResource Include="Resources\Raw\AppSQLite.db3-shm" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Modules\" />

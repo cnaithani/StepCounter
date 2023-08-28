@@ -48,8 +48,9 @@
                                                         Style="{StaticResource lblHeader3OnSurface}"
                                                         Text="Target for Day"
                                                         VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
-                    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
-                           Style="{StaticResource lblHeader2OnSurface}"
+                    <Entry Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+                           VerticalTextAlignment="Center" HorizontalTextAlignment="End" HorizontalOptions="End"
+                           WidthRequest="50"
                            Text="{Binding Target}" />
 
 
