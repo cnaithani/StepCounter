@@ -6,6 +6,7 @@ namespace StepCounter.Models
         [SQLite.PrimaryKey]
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }
+        public int TotalSteps { get; set; }
         public int Steps { get; set; }
     }
 }

@@ -13,9 +13,13 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
+        WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, async (m, e) =>
         {
-            CounterBtn.Text = "Steps: " + e.Steps.ToString();
+            if (App.IsDatabaseInitialized == false)
+                return;
+
+            var currentS = await App.Database.GetCurrent();
+            lblSteps.Text = "Steps: " + currentS.Steps.ToString();
         });
 
     }

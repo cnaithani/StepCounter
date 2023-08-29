@@ -1,4 +1,5 @@
-﻿using StepCounter.Data;
+﻿using StepCounter.Classes;
+using StepCounter.Data;
 using StepCounter.Interfaces;
 
 namespace StepCounter;
@@ -6,7 +7,7 @@ namespace StepCounter;
 public partial class App : Application
 {
     static AppDatabase database;
-    static bool isDatabaseInitialized = false;
+    public static bool IsDatabaseInitialized = false;
     public App()
 	{
 		InitializeComponent();
@@ -24,12 +25,15 @@ public partial class App : Application
         if (database == null)
         {
             InitiateDB().ConfigureAwait(false);
+            database.UpdateDatabase().ConfigureAwait(false);
+            IsDatabaseInitialized = true;
         }
-        Task.Run(async () =>
-        {
-            await database.UpdateDatabase();
-            isDatabaseInitialized = true;
-        });
+        //Task.Run(async () =>
+        //{
+        //    await database.UpdateDatabase();
+        //    IsDatabaseInitialized = true;
+        //});
+
 
         MainPage = new AppShell();
 	}
@@ -49,7 +53,8 @@ public partial class App : Application
     {
         if (database == null)
         {
-            var commonDeviceHandler = App.Current.Handler.MauiContext.Services.GetServices<ICommonDeviceHelper>().FirstOrDefault();
+            //var commonDeviceHandler = App.Current.Handler.MauiContext.Services.GetServices<ICommonDeviceHelper>().FirstOrDefault();
+            var commonDeviceHandler = new CommonDeviceHelper();
             database = new AppDatabase(await commonDeviceHandler.GetDBFile());
         }
     }

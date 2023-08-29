@@ -56,9 +56,11 @@ namespace StepCounter.Platforms.Android.Services
         public void StartTimer(TimeSpan interval, Func<bool> callback)
         {
             var handler = new Handler(Looper.MainLooper);
-            handler.PostDelayed(() =>
+            handler.PostDelayed(async () =>
             {
                 Steps = (int)Pedometer.TotalSteps;
+                //Steps += 1;
+                await App.Database.SetCurrent(DateTime.Now, Steps);
                 OnPropertyChanged("Steps");
                 if (callback())
                     StartTimer(interval, callback);
@@ -67,6 +69,7 @@ namespace StepCounter.Platforms.Android.Services
                 handler = null;
             }, (long)interval.TotalMilliseconds);
         }
+
 
         #endregion
 
