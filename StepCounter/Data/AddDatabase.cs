@@ -32,6 +32,13 @@ namespace StepCounter.Data
                 return ;
 
             var current = await GetCurrent();
+
+            //if (timeStamp.Date < current.Timestamp.Date)
+            //{
+            //    current.Steps = 0;
+            //    current.Steps = 0;
+            //}
+
             int steps = totalSteps - current.TotalSteps;
             if (steps > 0)
             {
@@ -46,6 +53,24 @@ namespace StepCounter.Data
                 current.TotalSteps = totalSteps;
                 current.Timestamp = timeStamp;
                 await App.Database.database.UpdateAsync(current);
+            }
+
+            var lastEntry = await App.Database.database.Table<Step>().OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+            if (lastEntry == null)
+            {
+                lastEntry = new Step();
+                lastEntry.StartTime = (new DateTime(current.Timestamp.Year, current.Timestamp.Month, current.Timestamp.Day)).AddHours(current.Timestamp.Hour-2);
+                lastEntry.EndTime = (new DateTime(current.Timestamp.Year, current.Timestamp.Month, current.Timestamp.Day)).AddHours(current.Timestamp.Hour - 1);
+                lastEntry.Steps = 0;
+                await App.Database.database.InsertAsync(lastEntry);
+            }
+            if ((current.Timestamp - lastEntry.StartTime).Hours > 0)
+            {
+                var lastEntrynew = new Step();
+                lastEntrynew.StartTime = (new DateTime(current.Timestamp.Year, current.Timestamp.Month, current.Timestamp.Day)).AddHours(current.Timestamp.Hour - 1);
+                lastEntrynew.EndTime = (new DateTime(current.Timestamp.Year, current.Timestamp.Month, current.Timestamp.Day)).AddHours(current.Timestamp.Hour );
+                lastEntrynew.Steps = 0;
+                await App.Database.database.InsertAsync(lastEntrynew);
             }
 
         }

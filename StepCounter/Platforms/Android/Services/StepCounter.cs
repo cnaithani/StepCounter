@@ -76,9 +76,9 @@ namespace StepCounter.Platforms.Android.Services
 
         public async Task Refresh()
         {
-            Steps = (int)Pedometer.TotalSteps;
-            //Steps += 1;
-            await App.Database.SetCurrent(DateTime.Now, Steps);
+            var totSteps = (int)Pedometer.TotalSteps; ;
+            await App.Database.SetCurrent(DateTime.Now, totSteps);
+            Steps = (await App.Database.GetCurrent()).Steps;
             OnPropertyChanged("Steps");
         }
 
