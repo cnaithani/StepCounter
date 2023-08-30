@@ -52,16 +52,20 @@ namespace StepCounter.Platforms.Android.Services
             StartTimer(TimeSpan.FromSeconds(10), () => {  return true; });
             return StartCommandResult.Sticky;
         }
+        #endregion
+
+        public void ToggleAccelerometer()
+        {
+            Pedometer = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPedometer>();
+            Pedometer.Start();
+        }
 
         public void StartTimer(TimeSpan interval, Func<bool> callback)
         {
             var handler = new Handler(Looper.MainLooper);
             handler.PostDelayed(async () =>
             {
-                Steps = (int)Pedometer.TotalSteps;
-                //Steps += 1;
-                await App.Database.SetCurrent(DateTime.Now, Steps);
-                OnPropertyChanged("Steps");
+                await Refresh();
                 if (callback())
                     StartTimer(interval, callback);
 
@@ -70,22 +74,15 @@ namespace StepCounter.Platforms.Android.Services
             }, (long)interval.TotalMilliseconds);
         }
 
-
-        #endregion
-
-        public void ToggleAccelerometer()
+        public async Task Refresh()
         {
-            Pedometer = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPedometer>();
-
-            //Pedometer.ReadingChanged += (sender, reading) =>
-            //{
-            //    Steps = (int)reading.TotalSteps;
-            //};
-
-            Pedometer.Start();
+            Steps = (int)Pedometer.TotalSteps;
+            //Steps += 1;
+            await App.Database.SetCurrent(DateTime.Now, Steps);
+            OnPropertyChanged("Steps");
         }
 
-      
+
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)

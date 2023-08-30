@@ -52,7 +52,6 @@ public class MainActivity : MauiAppCompatActivity
 
     private void StartStepService()
     {
-
         try
         {
             stepService = new Intent(this, typeof(StepService));
@@ -80,6 +79,13 @@ public class MainActivity : MauiAppCompatActivity
         var serviceIntent = new Intent(this, typeof(StepService));
         serviceConnection = new StepServiceConnection(this);
         BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
+    }
+
+    protected async override void OnResume()
+    {
+        base.OnResume();
+        if (SetpService != null)
+            await SetpService.Refresh();
     }
 
     protected override void OnStop()

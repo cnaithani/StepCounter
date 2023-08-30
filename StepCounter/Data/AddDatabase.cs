@@ -28,21 +28,21 @@ namespace StepCounter.Data
 
         public async Task SetCurrent(DateTime timeStamp, int totalSteps)
         {
-            if (IsInitialized == false)
+            if (App.IsDatabaseInitialized == false)
                 return ;
 
             var current = await GetCurrent();
             int steps = totalSteps - current.TotalSteps;
             if (steps > 0)
             {
-                current.Steps = steps;
+                current.Steps += steps;
                 current.TotalSteps = totalSteps;
                 current.Timestamp = timeStamp;
                 await App.Database.database.UpdateAsync(current);
             }
             else if(steps < 0)
             {
-                current.Steps = totalSteps;
+                current.Steps = 0;
                 current.TotalSteps = totalSteps;
                 current.Timestamp = timeStamp;
                 await App.Database.database.UpdateAsync(current);
@@ -52,7 +52,7 @@ namespace StepCounter.Data
 
         public async Task<CurrentCounter> GetCurrent()
         {
-            if (IsInitialized == false)
+            if (App.IsDatabaseInitialized == false)
                 return null;
             var current = await App.Database.database.Table<CurrentCounter>().FirstOrDefaultAsync();
             if (current == null)
