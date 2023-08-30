@@ -33,23 +33,17 @@ namespace StepCounter.Data
 
             var current = await GetCurrent();
 
-            //if (timeStamp.Date < current.Timestamp.Date)
-            //{
-            //    current.Steps = 0;
-            //    current.Steps = 0;
-            //}
-
-            int steps = totalSteps - current.TotalSteps;
-            if (steps > 0)
+            int steps = totalSteps - current.TotalSteps;         
+            if(steps < 0 || timeStamp.Date < current.Timestamp.Date)
             {
-                current.Steps += steps;
+                current.Steps = 0;
                 current.TotalSteps = totalSteps;
                 current.Timestamp = timeStamp;
                 await App.Database.database.UpdateAsync(current);
             }
-            else if(steps < 0)
+            if (steps > 0)
             {
-                current.Steps = 0;
+                current.Steps += steps;
                 current.TotalSteps = totalSteps;
                 current.Timestamp = timeStamp;
                 await App.Database.database.UpdateAsync(current);

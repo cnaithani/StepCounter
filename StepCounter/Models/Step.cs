@@ -3,7 +3,7 @@ namespace StepCounter.Models
 {
 	public class Step
 	{
-        [SQLite.PrimaryKey]
+        [SQLite.PrimaryKey, SQLite.AutoIncrement]
         public int Id { get; set; }
         public Boolean IsActive { get; set; }
         public int ServerId { get; set; }
