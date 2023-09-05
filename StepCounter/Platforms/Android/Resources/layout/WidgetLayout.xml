@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:minWidth="40px"
+    android:minHeight="40px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:theme="@style/Maui.MainTheme"
+    android:background="@android:color/background_light"
+    android:id="@+id/widgetLayout">
+	<LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/linearLayout2">
+		<ImageView
+            android:src="@drawable/dotnet_bot"
+            android:contentDescription="The dotnet bot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/imageView1" />
+		<LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout3">
+			<TextView
+                android:text="Hello .NET MAUI"
+                android:layout_margin="5dp"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/colorPrimaryDark"
+                android:id="@+id/textView1" />
+			<CheckBox
+                android:text="Option 1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox1" />
+			<CheckBox
+                android:text="Option 2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox2" />
+			<CheckBox
+                android:text="Option 3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox2" />
+		</LinearLayout>
+	</LinearLayout>
+	<Button
+        android:text="Start some action!"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?android:attr/colorPrimary"
+        android:textColor="@android:color/white"
+        android:id="@+id/actionButton" />
+</LinearLayout>

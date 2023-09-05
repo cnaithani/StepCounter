@@ -90,6 +90,7 @@
 	  <Folder Include="Modules\AppSettings\ViewModels\" />
 	  <Folder Include="Global\" />
 	  <Folder Include="Modules\AppSettings\Views\" />
+	  <Folder Include="Platforms\Android\Resources\drawable\" />
 	  <Folder Include="Platforms\Android\Services\" />
 	  <Folder Include="Platforms\Android\Classes\" />
 	  <Folder Include="Models\" />
@@ -99,6 +100,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Plugin.Maui.Pedometer\src\Plugin.Maui.Pedometer\Plugin.Maui.Pedometer.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ApplicationDefinition Include="Platforms\Android\Resources\xml\example_appwidget_info.xml" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiAsset Update="Resources\Raw\AppSQLite.db3">
