@@ -49,15 +49,5 @@ namespace MauiWidgets.Platforms.Android
                 appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
             });
         }
-
-        public override void OnReceive(Context context, Intent intent)
-        {
-            var action = intent.Action;
-            if (action == ActionIdentifier)
-            {
-                //MessagingCenter.Send<WidgetActionMessage>(new WidgetActionMessage(), string.Empty);
-            }
-            base.OnReceive(context, intent);
-        }
     }
 }
