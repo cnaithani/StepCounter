@@ -100,7 +100,7 @@ public class MainActivity : MauiAppCompatActivity
 
     void HandlePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != "Steps")
+        if (e.PropertyName != "Steps" || SetpService == null)
             return;
 
         //TODO - Check
