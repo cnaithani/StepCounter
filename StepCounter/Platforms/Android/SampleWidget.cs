@@ -6,6 +6,7 @@ using Android.Widget;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using StepCounter;
 using StepCounter.Global;
+using static Android.Provider.CalendarContract;
 
 namespace MauiWidgets.Platforms.Android
 {
@@ -17,9 +18,11 @@ namespace MauiWidgets.Platforms.Android
         private const string ActionIdentifier = "test";
         RemoteViews vwWidget;
         int widgetId;
+        AppWidgetManager appWidgetManager;
 
-        public override void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+        public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
         {
+            this.appWidgetManager = appWidgetManager;
             foreach (var widgetId in appWidgetIds)
             {
                 var intent = new Intent(context, typeof(MainActivity));
@@ -35,19 +38,53 @@ namespace MauiWidgets.Platforms.Android
                 appWidgetManager.UpdateAppWidget(StepCounter.Resource.Layout.WidgetLayout, vwWidget);
             }
 
+            if (App.IsDatabaseInitialized == false)
+                return;
 
-            WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, async (m, e) =>
-            {
-                if (App.IsDatabaseInitialized == false)
-                    return;
+            if (vwWidget == null)
+                return;
 
-                if (vwWidget == null)
-                    return;
+            var currentS = await App.Database.GetCurrent();
+            vwWidget.SetTextViewText(StepCounter.Resource.Id.textView2, currentS.Steps.ToString());
+            appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
 
-                var currentS = await App.Database.GetCurrent();
-                vwWidget.SetTextViewText(StepCounter.Resource.Id.textView2, currentS.Steps.ToString());
-                appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
-            });
+
+            //WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, async (m, e) =>
+            //{
+            //    if (App.IsDatabaseInitialized == false)
+            //        return;
+
+            //    if (vwWidget == null)
+            //        return;
+
+            //    var currentS = await App.Database.GetCurrent();
+            //    vwWidget.SetTextViewText(StepCounter.Resource.Id.textView2, currentS.Steps.ToString());
+            //    appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
+            //});
+        }
+
+        public override async void OnReceive(Context context, Intent intent)
+        {
+            //var action = intent.Action;
+            //if (action == ActionIdentifier)
+            //{
+            //}
+
+            base.OnReceive(context, intent);
+
+            if (App.IsDatabaseInitialized == false)
+                return;
+
+            var vwWidget = new RemoteViews(packageName: context.PackageName, layoutId: StepCounter.Resource.Layout.WidgetLayout);
+            if (vwWidget == null)
+                return;
+
+            var appWidgetManager = AppWidgetManager.GetInstance(MainActivity.Instance);
+
+            var currentS = await App.Database.GetCurrent().ConfigureAwait(false);   
+            vwWidget.SetTextViewText(StepCounter.Resource.Id.textView2, currentS.Steps.ToString());
+            appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
+            
         }
     }
 }

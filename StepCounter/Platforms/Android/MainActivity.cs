@@ -1,11 +1,14 @@
 ﻿using Android.App;
+using Android.Appwidget;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using AndroidX.ConstraintLayout.Core.Motion.Utils;
+using MauiWidgets.Platforms.Android;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using StepCounter.Global;
 using StepCounter.Platforms.Android.Services;
+using static Microsoft.Maui.ApplicationModel.Platform;
 
 namespace StepCounter;
 
@@ -15,7 +18,7 @@ public class MainActivity : MauiAppCompatActivity
     public static MainActivity Instance { get; private set; }
     public StepService SetpService { get;  set; }
 
-    private Intent stepService;
+    private Android.Content.Intent stepService;
 
     protected override void OnCreate(Bundle savedInstanceState)
     {
@@ -54,7 +57,7 @@ public class MainActivity : MauiAppCompatActivity
     {
         try
         {
-            stepService = new Intent(this, typeof(StepService));
+            stepService = new Android.Content.Intent(this, typeof(StepService));
             var componentName = StartService(stepService);
         }
         catch (Exception ex)
@@ -76,7 +79,7 @@ public class MainActivity : MauiAppCompatActivity
         if (IsBound)
             return;
 
-        var serviceIntent = new Intent(this, typeof(StepService));
+        var serviceIntent = new Android.Content.Intent(this, typeof(StepService));
         serviceConnection = new StepServiceConnection(this);
         BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
     }
@@ -105,7 +108,6 @@ public class MainActivity : MauiAppCompatActivity
 
         //TODO - Check
         WeakReferenceMessenger.Default.Send(new StepStepUpdateMsg { Steps = SetpService.Steps});
-        //UpdateUI();
     }
 }
 

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Android.App;
 using AndroidApp = Android.App.Application;
-using Android.Content;
+using AC = Android.Content;
 using Android.Content.PM;
 using Android.Hardware;
 using Android.OS;
@@ -13,6 +13,9 @@ using AndroidX.LocalBroadcastManager.Content;
 using Java.Util.Logging;
 using Handler = Android.OS.Handler;
 using Plugin.Maui.Pedometer;
+using Android.Appwidget;
+using MauiWidgets.Platforms.Android;
+using static Android.Provider.CalendarContract;
 
 namespace StepCounter.Platforms.Android.Services
 {
@@ -37,7 +40,7 @@ namespace StepCounter.Platforms.Android.Services
 
             handler = new Handler(Looper.MainLooper);
         }
-        public override IBinder OnBind(Intent intent)
+        public override IBinder OnBind(AC.Intent intent)
         {
             this.Binder = new StepServiceBinder(this);
             MainActivity.Instance.SetpService = this;
@@ -47,13 +50,14 @@ namespace StepCounter.Platforms.Android.Services
             return this.Binder;
         }
         
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        public override StartCommandResult OnStartCommand(AC.Intent intent, StartCommandFlags flags, int startId)
         {
             StartTimer(TimeSpan.FromSeconds(10), () => {  return true; });
             return StartCommandResult.Sticky;
         }
         #endregion
 
+        #region Step Counter
         public void ToggleAccelerometer()
         {
             Pedometer = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPedometer>();
@@ -74,21 +78,31 @@ namespace StepCounter.Platforms.Android.Services
             }, (long)interval.TotalMilliseconds);
         }
 
+        private void UpdateWidget()
+        {
+            var intent = new AC.Intent(this, typeof(SampleWidget));
+            intent.SetAction("android.appwidget.action.APPWIDGET_UPDATE");
+            var ids = AppWidgetManager.GetInstance(MainActivity.Instance).GetAppWidgetIds(new AC.ComponentName(MainActivity.Instance, Java.Lang.Class.FromType(typeof(SampleWidget)).Name));
+            intent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, ids);
+            SendBroadcast(intent);
+        }
+
         public async Task Refresh()
         {
             //For Real Device
-            var totSteps = (int)Pedometer.TotalSteps;
-            await App.Database.SetCurrent(DateTime.Now, totSteps);
-            Steps = (await App.Database.GetCurrent()).Steps;
-            OnPropertyChanged("Steps");
-
-            //For Emulator
-            //var rnd = new Random();
-            //await App.Database.SetCurrent(DateTime.Now, (int)rnd.NextInt64(1, 1000));
+            //var totSteps = (int)Pedometer.TotalSteps;
+            //await App.Database.SetCurrent(DateTime.Now, totSteps);
             //Steps = (await App.Database.GetCurrent()).Steps;
             //OnPropertyChanged("Steps");
-        }
 
+            //For Emulator
+            var rnd = new Random();
+            await App.Database.SetCurrent(DateTime.Now, (int)rnd.NextInt64(1, 1000));
+            Steps = (await App.Database.GetCurrent()).Steps;
+            UpdateWidget();
+            OnPropertyChanged("Steps");
+        }
+        #endregion
 
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
