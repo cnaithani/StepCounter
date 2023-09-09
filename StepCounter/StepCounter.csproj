@@ -77,6 +77,7 @@
 	  <None Remove="Data\" />
 	  <None Remove="Interfaces\" />
 	  <None Remove="Classes\" />
+	  <None Remove="Platforms\Android\Services\Interfaces\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\home32.svg" />
@@ -97,6 +98,7 @@
 	  <Folder Include="Data\" />
 	  <Folder Include="Interfaces\" />
 	  <Folder Include="Classes\" />
+	  <Folder Include="Platforms\Android\Services\Interfaces\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Plugin.Maui.Pedometer\src\Plugin.Maui.Pedometer\Plugin.Maui.Pedometer.csproj" />
@@ -108,5 +110,10 @@
 	  <MauiAsset Update="Resources\Raw\AppSQLite.db3">
 	    <LogicalName>AppSQLite.db3</LogicalName>
 	  </MauiAsset>
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Interfaces\IStepServiceWapper.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	</ItemGroup>
 </Project>

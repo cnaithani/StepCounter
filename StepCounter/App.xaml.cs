@@ -8,9 +8,10 @@ public partial class App : Application
 {
     static AppDatabase database;
     public static bool IsDatabaseInitialized = false;
-    public App()
+
+    public App(IServiceProvider Provider)
 	{
-		InitializeComponent();
+        InitializeComponent();
 
         if (Preferences.Get("APPTHEME", "Light") == "Dark")
         {
@@ -37,7 +38,6 @@ public partial class App : Application
 
         MainPage = new AppShell();
 	}
-
     public static AppDatabase Database
     {
         get
@@ -53,9 +53,8 @@ public partial class App : Application
     {
         if (database == null)
         {
-            //var commonDeviceHandler = App.Current.Handler.MauiContext.Services.GetServices<ICommonDeviceHelper>().FirstOrDefault();
-            var commonDeviceHandler = new CommonDeviceHelper();
-            database = new AppDatabase(await commonDeviceHandler.GetDBFile());
+            var commonDeviceHelper = new CommonDeviceHelper();
+            database = new AppDatabase(await commonDeviceHelper.GetDBFile());
         }
     }
 }

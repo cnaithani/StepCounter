@@ -37,7 +37,10 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
     {
-        //mauiAppBuilder.Services.AddSingleton<ICommonDeviceHelper, CommonDeviceHelper>();
+        mauiAppBuilder.Services.AddSingleton<ICommonDeviceHelper, CommonDeviceHelper>();
+#if ANDROID
+        mauiAppBuilder.Services.AddSingleton<IStepServiceWapper, StepCounter.Platforms.Android.Services.StepServiceWapper>();
+#endif
         return mauiAppBuilder;
     }
 }

@@ -5,20 +5,29 @@ using Android.Content.PM;
 using Android.OS;
 using AndroidX.ConstraintLayout.Core.Motion.Utils;
 using MauiWidgets.Platforms.Android;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using StepCounter.Global;
+using StepCounter.Interfaces;
 using StepCounter.Platforms.Android.Services;
-using static Microsoft.Maui.ApplicationModel.Platform;
 
 namespace StepCounter;
 
 [Activity(Theme = "@style/Maui.MainTheme.NoActionBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
+    //binder.StepService.PropertyChanged -= HandlePropertyChanged;
+    //binder.StepService.PropertyChanged += HandlePropertyChanged;
+
     public static MainActivity Instance { get; private set; }
     public StepService SetpService { get;  set; }
+    private Android.Content.Intent StepServiceIntent;
+    private IStepServiceWapper serviceWrapper;
 
-    private Android.Content.Intent stepService;
+    public MainActivity()
+    {
+        serviceWrapper = App.Current.Handler.MauiContext.Services.GetServices<IStepServiceWapper>().FirstOrDefault();
+    }
 
     protected override void OnCreate(Bundle savedInstanceState)
     {
@@ -27,42 +36,18 @@ public class MainActivity : MauiAppCompatActivity
         Instance = this;
     }
 
-    public bool IsBound { get; set; }
-    private StepServiceBinder binder;
-    private bool registered;
-    private StepServiceConnection serviceConnection;
-
-    public StepServiceBinder Binder
-    {
-        get { return binder; }
-        set
-        {
-            binder = value;
-            if (binder == null)
-                return;
-
-            //trigger UI refresh on first bind
-            HandlePropertyChanged(null, new System.ComponentModel.PropertyChangedEventArgs("Steps"));
-
-            if (registered)
-                binder.StepService.PropertyChanged -= HandlePropertyChanged;
-
-            binder.StepService.PropertyChanged += HandlePropertyChanged;
-            registered = true;
-        }
-
-    }
-
     private void StartStepService()
     {
         try
         {
-            stepService = new Android.Content.Intent(this, typeof(StepService));
-            var componentName = StartService(stepService);
+            //StepServiceIntent = new Android.Content.Intent(this, typeof(StepService));
+            //var componentName = StartService(StepServiceIntent);
+            serviceWrapper.StartForegroundServiceCompat();
         }
         catch (Exception ex)
         {
             //TODO - Check
+            var str = ex.Message;
         }
 
     }
@@ -73,15 +58,8 @@ public class MainActivity : MauiAppCompatActivity
 
         //TODO - Check
 
-        if (stepService == null)
+        if (StepServiceIntent == null)
             StartStepService();
-
-        if (IsBound)
-            return;
-
-        var serviceIntent = new Android.Content.Intent(this, typeof(StepService));
-        serviceConnection = new StepServiceConnection(this);
-        BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
     }
 
     protected async override void OnResume()
@@ -94,11 +72,6 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnStop()
     {
         base.OnStop();
-        if (IsBound)
-        {
-            UnbindService(serviceConnection);
-            IsBound = false;
-        }
     }
 
     void HandlePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

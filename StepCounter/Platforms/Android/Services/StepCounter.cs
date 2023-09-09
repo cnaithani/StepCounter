@@ -42,18 +42,18 @@ namespace StepCounter.Platforms.Android.Services
         }
         public override IBinder OnBind(AC.Intent intent)
         {
-            this.Binder = new StepServiceBinder(this);
-            MainActivity.Instance.SetpService = this;
-
-            ToggleAccelerometer();
-
-            return this.Binder;
+            return null;
         }
-        
+        public override void OnDestroy()
+        {
+            //base.OnDestroy();
+        }
+
         public override StartCommandResult OnStartCommand(AC.Intent intent, StartCommandFlags flags, int startId)
         {
+            ToggleAccelerometer();
             StartTimer(TimeSpan.FromSeconds(10), () => {  return true; });
-            return StartCommandResult.Sticky;
+            return StartCommandResult.Sticky ;
         }
         #endregion
 
