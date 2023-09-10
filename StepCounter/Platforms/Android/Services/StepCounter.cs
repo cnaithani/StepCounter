@@ -51,9 +51,55 @@ namespace StepCounter.Platforms.Android.Services
 
         public override StartCommandResult OnStartCommand(AC.Intent intent, StartCommandFlags flags, int startId)
         {
+            RegisterForegroundService();
             ToggleAccelerometer();
             StartTimer(TimeSpan.FromSeconds(10), () => {  return true; });
             return StartCommandResult.Sticky ;
+        }
+        private NotificationManager notificationManager;
+        Notification notification;
+        Notification.Builder notificationBuilder;
+        void RegisterForegroundService()
+        {
+            CreateNotificationChannel();
+
+            // Enlist this instance of the service as a foreground service
+            StartForeground(1000, notification);
+        }
+        void CreateNotificationChannel()
+        {
+            notificationBuilder = new Notification.Builder(MainActivity.Instance, "StepCounterChannelId");
+
+            var builder = notificationBuilder
+                                .SetContentTitle("Steps")
+                                .SetContentText(Steps.ToString())
+                                .SetColorized(true)
+                                .SetOngoing(true);
+
+            notification = builder.Build();
+
+            var channelName = "StepCounterChannel";
+            var channelDescription = "Step Counts";
+            var channel = new NotificationChannel("StepCounterChannelId", channelName, NotificationImportance.Low)
+            {
+                Description = channelDescription
+            };
+
+            notificationManager = (NotificationManager)GetSystemService(NotificationService);
+            notificationManager.CreateNotificationChannel(channel);
+        }
+
+        void UpdateNotificationChannel()
+        {
+            try
+            {
+                notificationBuilder.SetContentText(Steps.ToString());
+                notificationManager.Notify(10000, notificationBuilder.Build());
+            }
+            catch (Exception ex)
+            {
+                var str = ex.Message;
+            }
         }
         #endregion
 
