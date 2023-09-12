@@ -136,17 +136,18 @@ namespace StepCounter.Platforms.Android.Services
         public async Task Refresh()
         {
             //For Real Device
-            //var totSteps = (int)Pedometer.TotalSteps;
-            //await App.Database.SetCurrent(DateTime.Now, totSteps);
-            //Steps = (await App.Database.GetCurrent()).Steps;
-            //OnPropertyChanged("Steps");
-
-            //For Emulator
-            var rnd = new Random();
-            await App.Database.SetCurrent(DateTime.Now, (int)rnd.NextInt64(1, 1000));
+            var totSteps = (int)Pedometer.TotalSteps;
+            await App.Database.SetCurrent(DateTime.Now, totSteps);
             Steps = (await App.Database.GetCurrent()).Steps;
             UpdateWidget();
             OnPropertyChanged("Steps");
+
+            //For Emulator
+            //var rnd = new Random();
+            //await App.Database.SetCurrent(DateTime.Now, (int)rnd.NextInt64(1, 1000));
+            //Steps = (await App.Database.GetCurrent()).Steps;
+            //UpdateWidget();
+            //OnPropertyChanged("Steps");
         }
         #endregion
 
