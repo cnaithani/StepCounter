@@ -27,17 +27,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout3">
 			<TextView
-                android:text="Steps Today"
-                android:layout_margin="4dp"
-                android:textStyle="normal"
-                android:gravity="center_horizontal"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:id="@+id/textView1" />
-			<TextView
-                android:text="Fetching..."
+                android:text="0"
                 android:layout_margin="5dp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
@@ -46,6 +36,16 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:id="@+id/textView2" />
+			<TextView
+                android:text="Steps"
+                android:layout_margin="3dp"
+                android:textStyle="normal"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:id="@+id/textView1" />
 		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

@@ -13,13 +13,9 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, async (m, e) =>
+        WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
         {
-            if (App.IsDatabaseInitialized == false)
-                return;
-
-            var currentS = await App.Database.GetCurrent();
-            lblSteps.Text = "Steps: " + currentS.Steps.ToString();
+            lblSteps.Text = "Steps: " + e.Steps.ToString();
         });
 
     }
@@ -30,18 +26,6 @@ public partial class MainPage : ContentPage
         BindingContext = currentVM;
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
-	{
-		//count++;
-
-		//if (count == 1)
-		//	CounterBtn.Text = $"Clicked {count} time";
-		//else
-		//	CounterBtn.Text = $"Clicked {count} times";
-
-		//SemanticScreenReader.Announce(CounterBtn.Text);
-
-	}
 }
 
 

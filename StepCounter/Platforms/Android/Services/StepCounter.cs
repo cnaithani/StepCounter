@@ -16,16 +16,19 @@ using Plugin.Maui.Pedometer;
 using Android.Appwidget;
 using MauiWidgets.Platforms.Android;
 using static Android.Provider.CalendarContract;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using StepCounter.Global;
 
 namespace StepCounter.Platforms.Android.Services
 {
     [Service(Enabled = true)]
-    public class StepService :Service, INotifyPropertyChanged
+    public class StepService :Service
     {
         private int StepsCounter = 0;
         public IBinder Binder { get; private set; }
         Handler handler;
         IPedometer Pedometer;
+        int previousStep = 0;
 
         public int Steps
         {
@@ -136,29 +139,22 @@ namespace StepCounter.Platforms.Android.Services
         public async Task Refresh()
         {
             //For Real Device
-            var totSteps = (int)Pedometer.TotalSteps;
-            await App.Database.SetCurrent(DateTime.Now, totSteps);
-            Steps = (await App.Database.GetCurrent()).Steps;
-            UpdateWidget();
-            OnPropertyChanged("Steps");
+            //var totSteps = (int)Pedometer.TotalSteps;
+            //await App.Database.SetCurrent(DateTime.Now, totSteps);
+            //Steps = (await App.Database.GetCurrent()).Steps;
+
 
             //For Emulator
-            //var rnd = new Random();
-            //await App.Database.SetCurrent(DateTime.Now, (int)rnd.NextInt64(1, 1000));
-            //Steps = (await App.Database.GetCurrent()).Steps;
-            //UpdateWidget();
-            //OnPropertyChanged("Steps");
-        }
-        #endregion
+            var rnd = new Random();
+            await App.Database.SetCurrent(DateTime.Now, (int)rnd.NextInt64(1, 1000));
+            Steps = (await App.Database.GetCurrent()).Steps;
 
-        #region INotifyPropertyChanged implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged == null)
-                return;
-
-            PropertyChanged(this, new PropertyChangedEventArgs(name));
+            if (previousStep != Steps)
+            {
+                previousStep = Steps;
+                UpdateWidget();
+                WeakReferenceMessenger.Default.Send(new StepStepUpdateMsg { Steps = Steps });
+            }
         }
         #endregion
 

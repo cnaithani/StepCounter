@@ -48,28 +48,10 @@ namespace MauiWidgets.Platforms.Android
             vwWidget.SetTextViewText(StepCounter.Resource.Id.textView2, currentS.Steps.ToString());
             appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
 
-
-            //WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, async (m, e) =>
-            //{
-            //    if (App.IsDatabaseInitialized == false)
-            //        return;
-
-            //    if (vwWidget == null)
-            //        return;
-
-            //    var currentS = await App.Database.GetCurrent();
-            //    vwWidget.SetTextViewText(StepCounter.Resource.Id.textView2, currentS.Steps.ToString());
-            //    appWidgetManager.UpdateAppWidget(widgetId, vwWidget);
-            //});
         }
 
         public override async void OnReceive(Context context, Intent intent)
         {
-            //var action = intent.Action;
-            //if (action == ActionIdentifier)
-            //{
-            //}
-
             base.OnReceive(context, intent);
 
             if (App.IsDatabaseInitialized == false)

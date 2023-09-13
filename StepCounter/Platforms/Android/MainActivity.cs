@@ -16,9 +16,6 @@ namespace StepCounter;
 [Activity(Theme = "@style/Maui.MainTheme.NoActionBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
-    //binder.StepService.PropertyChanged -= HandlePropertyChanged;
-    //binder.StepService.PropertyChanged += HandlePropertyChanged;
-
     public static MainActivity Instance { get; private set; }
     public StepService SetpService { get;  set; }
     private Android.Content.Intent StepServiceIntent;
@@ -40,8 +37,6 @@ public class MainActivity : MauiAppCompatActivity
     {
         try
         {
-            //StepServiceIntent = new Android.Content.Intent(this, typeof(StepService));
-            //var componentName = StartService(StepServiceIntent);
             serviceWrapper.StartForegroundServiceCompat();
         }
         catch (Exception ex)
@@ -72,15 +67,6 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnStop()
     {
         base.OnStop();
-    }
-
-    void HandlePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != "Steps" || SetpService == null)
-            return;
-
-        //TODO - Check
-        WeakReferenceMessenger.Default.Send(new StepStepUpdateMsg { Steps = SetpService.Steps});
     }
 }
 
