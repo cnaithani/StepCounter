@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:charts="clr-namespace:StepCounter.Charts.Pie"
              x:Class="StepCounter.MainPage">
 
     <ScrollView>
         <VerticalStackLayout
             Spacing="25"
             Padding="30,0"
-            VerticalOptions="Center">
+            VerticalOptions="Center" HorizontalOptions="Center">
 
             <Label x:Name="lblSteps"
                 Text="Fetching...."
@@ -15,7 +16,7 @@
                 FontSize="32"
                 HorizontalOptions="Center" />
 
-
+            <charts:PieChart Points="{Binding .}" VerticalOptions="Center" HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </ScrollView>
 

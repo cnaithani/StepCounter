@@ -78,6 +78,8 @@
 	  <None Remove="Interfaces\" />
 	  <None Remove="Classes\" />
 	  <None Remove="Platforms\Android\Services\Interfaces\" />
+	  <None Remove="Charts\" />
+	  <None Remove="Charts\Pie\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\home32.svg" />
@@ -99,6 +101,8 @@
 	  <Folder Include="Interfaces\" />
 	  <Folder Include="Classes\" />
 	  <Folder Include="Platforms\Android\Services\Interfaces\" />
+	  <Folder Include="Charts\" />
+	  <Folder Include="Charts\Pie\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Plugin.Maui.Pedometer\src\Plugin.Maui.Pedometer\Plugin.Maui.Pedometer.csproj" />
