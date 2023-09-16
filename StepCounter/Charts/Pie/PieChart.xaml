@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:charts="clr-namespace:StepCounter.Charts.Pie"
              x:Class="StepCounter.Charts.Pie.PieChart"
+             BackgroundColor="Aqua"
+             VerticalOptions="Center" HorizontalOptions="Center"
              >
-    <charts:PieChartGraphicsView x:Name="Chart"
+    <charts:PieChartGraphicsView x:Name="Chart" 
+                                 HorizontalOptions="Center" VerticalOptions="Center"
                                  WidthRequest="400"
-                                 HeightRequest="700"
+                                 HeightRequest="400"
                                  Points="{Binding .}"/>
 </StackLayout>
