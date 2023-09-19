@@ -29,5 +29,15 @@ namespace StepCounter
         //    pedometer.Start();
 
         //}
+        int steps = 0;
+        public int Steps
+        {
+            get { return steps; }
+            set
+            {
+                steps = value;
+                OnPropertyChanged("Steps");
+            }
+        }
     }
 }

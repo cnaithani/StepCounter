@@ -16,25 +16,11 @@ public partial class MainPage : ContentPage
         WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
         {
             lblSteps.Text = "Steps: " + e.Steps.ToString();
+            currentVM.Steps = e.Steps;
         });
 
 
-        BindingContext = new Dictionary<string, float>()
-        {
-            {"Apples",25},
-            {"Bananas",13},
-            {"Strawberries",25},
-            {"Blueberries", 53},
-            {"Oranges", 14},
-            {"Grapes", 52},
-            {"Watermelons", 15},
-            {"Pears",34 },
-            {"Cantalopes", 67},
-            {"Citrus",53 },
-            {"Starfruit", 43},
-            {"Papaya", 22},
-            {"Papassya", 22},
-        };
+        
 
     }
 
@@ -45,5 +31,6 @@ public partial class MainPage : ContentPage
     }
 
 }
+
 
 

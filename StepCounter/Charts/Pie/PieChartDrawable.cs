@@ -5,17 +5,25 @@ namespace StepCounter.Charts.Pie
 {
 	internal class PieChartDrawable : View, IDrawable
     {
-        int xOffset = 300;
-        int yOffset = 200;
-        public static readonly BindableProperty PointsProperty = BindableProperty.Create(nameof(Points),
-            typeof(Dictionary<string, float>),
-            typeof(PieChartDrawable),
-            new Dictionary<string, float>());
-        public Dictionary<string, float> Points
+
+        public static readonly BindableProperty DisplayProperty = BindableProperty.Create(nameof(Display),
+        typeof(string),
+        typeof(PieChartDrawable),
+        string.Empty);
+        ICanvas canvas;
+        RectF rect;
+        public string Display
         {
-            get => (Dictionary<string, float>)GetValue(PointsProperty);
-            set => SetValue(PointsProperty, value);
+            get { return (string)GetValue(DisplayProperty); }
+            set {
+                SetValue(DisplayProperty, value);
+                //if (canvas !=null)
+                //    Draw(canvas, rect);
+
+            }
         }
+        
+
         /// <summary>
         /// Converts degrees around a circle to a Point
         /// </summary>
@@ -32,13 +40,21 @@ namespace StepCounter.Charts.Pie
         }
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            if (this.canvas == null)
+            {
+                this.canvas = canvas;
+                this.rect = dirtyRect;
+            }
+
+            int diameter = (int)System.Math.Min(dirtyRect.Width, dirtyRect.Height);
+            int offset = diameter / 2;
+
             canvas.ResetState();
-            var radius = dirtyRect.Width ;
-            var purple = Color.FromRgba(178, 127, 255, 125);
-            var translucent = Color.FromRgba(235, 222, 255, 0);
-            var white = Color.FromRgba(0, 0, 0, 255);
+            var radius = diameter + diameter / 4;
+            var purple = Color.FromRgba(178, 127, 255, 254);
+            var backGroundColor = Color.FromRgba(0, 0, 0, 255);
             canvas.FontColor = Color.FromArgb("#7F2CF6");
-            var center = new PointF(xOffset + dirtyRect.Center.X, yOffset + dirtyRect.Center.Y);
+            var center = new PointF(offset + dirtyRect.Center.X + offset / 2 + offset/5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5);
             //Draw Outer Circle 
             var radialGradientPaint = new RadialGradientPaint
             {
@@ -54,13 +70,20 @@ namespace StepCounter.Charts.Pie
             //Draw Inner Circle 
             var radialGradientPaintInner = new RadialGradientPaint
             {
-                EndColor = white,
-                StartColor = white
+                EndColor = backGroundColor,
+                StartColor = backGroundColor
             };
 
             var radialRectangleInner = new RectF(dirtyRect.Center.X - radius + 100, dirtyRect.Center.Y - radius + 100, radius * 2 - 200, radius * 2 - 200);
             canvas.SetFillPaint(radialGradientPaintInner, radialRectangleInner);
             canvas.FillCircle(center, radius-100);
+
+            canvas.StrokeColor = Colors.White;
+            canvas.FontSize = 96;
+            canvas.FontColor = Colors.White;
+            canvas.DrawString(Display== string.Empty? "Fetching..": Display,
+                    offset + dirtyRect.Center.X + offset / 2 + offset / 5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5,
+                   HorizontalAlignment.Center);
 
             /*
             var scale = 100f / Points.Select(x => x.Value).Sum();

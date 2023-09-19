@@ -16,7 +16,7 @@
                 FontSize="32"
                 HorizontalOptions="Center" />
 
-            <charts:PieChart Points="{Binding .}" VerticalOptions="Center" HorizontalOptions="Center"/>
+            <charts:PieChart Display="{Binding Steps}" VerticalOptions="Center" HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </ScrollView>
 
