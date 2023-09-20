@@ -15,7 +15,6 @@ public partial class MainPage : ContentPage
 
         WeakReferenceMessenger.Default.Register<StepStepUpdateMsg>(this, (m, e) =>
         {
-            lblSteps.Text = "Steps: " + e.Steps.ToString();
             currentVM.Steps = e.Steps;
         });
 

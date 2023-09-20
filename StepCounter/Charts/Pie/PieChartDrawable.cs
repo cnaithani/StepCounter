@@ -17,6 +17,7 @@ namespace StepCounter.Charts.Pie
             get { return (string)GetValue(DisplayProperty); }
             set {
                 SetValue(DisplayProperty, value);
+                OnPropertyChanged(nameof(DisplayProperty));
                 //if (canvas !=null)
                 //    Draw(canvas, rect);
 
@@ -40,12 +41,6 @@ namespace StepCounter.Charts.Pie
         }
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            if (this.canvas == null)
-            {
-                this.canvas = canvas;
-                this.rect = dirtyRect;
-            }
-
             int diameter = (int)System.Math.Min(dirtyRect.Width, dirtyRect.Height);
             int offset = diameter / 2;
 
@@ -81,8 +76,15 @@ namespace StepCounter.Charts.Pie
             canvas.StrokeColor = Colors.White;
             canvas.FontSize = 96;
             canvas.FontColor = Colors.White;
-            canvas.DrawString(Display== string.Empty? "Fetching..": Display,
+            canvas.DrawString(Display== string.Empty || Display == "0" ? "Fetching..": Display,
                     offset + dirtyRect.Center.X + offset / 2 + offset / 5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5,
+                   HorizontalAlignment.Center);
+
+            canvas.StrokeColor = Colors.White;
+            canvas.FontSize = 48;
+            canvas.FontColor = Colors.White;
+            canvas.DrawString(Display == string.Empty || Display == "0" ? "" : "Steps",
+                    offset + dirtyRect.Center.X + offset / 2 + offset / 5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5 + 50,
                    HorizontalAlignment.Center);
 
             /*

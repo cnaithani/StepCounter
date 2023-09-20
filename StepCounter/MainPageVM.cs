@@ -13,22 +13,8 @@ namespace StepCounter
         
         public MainPageVM()
         {
-            //pedometer =  Application.Current.MainPage.Handler.MauiContext .Services.GetService<IPedometer>();
-            //StartCounting();
         }
 
-        //public int Steps { get; set; }
-
-        //public void StartCounting()
-        //{
-        //    pedometer.ReadingChanged += (sender, reading) =>
-        //    {
-        //        Steps =reading.NumberOfSteps;
-        //    };
-
-        //    pedometer.Start();
-
-        //}
         int steps = 0;
         public int Steps
         {

@@ -10,12 +10,6 @@
             Padding="30,0"
             VerticalOptions="Center" HorizontalOptions="Center">
 
-            <Label x:Name="lblSteps"
-                Text="Fetching...."
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
             <charts:PieChart Display="{Binding Steps}" VerticalOptions="Center" HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </ScrollView>

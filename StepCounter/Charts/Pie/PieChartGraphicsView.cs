@@ -12,6 +12,7 @@ namespace StepCounter.Charts.Pie
         {
             var chartView = ((PieChartGraphicsView)bindable);
             chartView.PieChartDrawable.Display = (string)newValue;
+            chartView.Invalidate();
         });
         public String Display
         {
