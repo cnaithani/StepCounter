@@ -1,5 +1,8 @@
 ﻿using System;
+using CT = System.Drawing;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Converters;
+using Microsoft.Maui.Graphics.Text;
 
 namespace StepCounter.Charts.Pie
 {
@@ -10,20 +13,74 @@ namespace StepCounter.Charts.Pie
         typeof(string),
         typeof(PieChartDrawable),
         string.Empty);
-        ICanvas canvas;
-        RectF rect;
         public string Display
         {
             get { return (string)GetValue(DisplayProperty); }
             set {
                 SetValue(DisplayProperty, value);
                 OnPropertyChanged(nameof(DisplayProperty));
-                //if (canvas !=null)
-                //    Draw(canvas, rect);
 
             }
         }
-        
+
+
+        public static readonly BindableProperty BackGroundColorProperty = BindableProperty.Create(nameof(BackGroundColor),
+        typeof(Color),
+        typeof(PieChartDrawable),
+        Color.FromRgba(255, 255, 255, 125));
+        public Color BackGroundColor
+        {
+            get { return (Color)GetValue(BackGroundColorProperty); }
+            set
+            {
+                SetValue(BackGroundColorProperty, value);
+                OnPropertyChanged(nameof(BackGroundColorProperty));
+            }
+        }
+
+        public static readonly BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor),
+        typeof(Color),
+        typeof(PieChartDrawable),
+        Color.FromRgba(97, 1, 238, 125));
+        public Color PrimaryColor
+        {
+            get { return (Color)GetValue(PrimaryColorProperty); }
+            set
+            {
+                SetValue(PrimaryColorProperty, value);
+                OnPropertyChanged(nameof(PrimaryColorProperty));
+            }
+        }
+
+        public static readonly BindableProperty TextColorProperty = BindableProperty.Create(nameof(TextColor),
+        typeof(Color),
+        typeof(PieChartDrawable),
+        Color.FromRgba(255, 255, 255, 255));
+        public Color TextColor
+        {
+            get { return (Color)GetValue(TextColorProperty); }
+            set
+            {
+                SetValue(TextColorProperty, value);
+                OnPropertyChanged(nameof(TextColorProperty));
+            }
+        }
+
+        public static readonly BindableProperty PercentProperty = BindableProperty.Create(nameof(Percent),
+        typeof(decimal),
+        typeof(PieChartDrawable),
+        (Decimal)0.0);
+        public decimal Percent
+        {
+            get { return (decimal)GetValue(PercentProperty); }
+            set
+            {
+                SetValue(PercentProperty, value);
+                OnPropertyChanged(nameof(PercentProperty));
+
+            }
+        }
+
 
         /// <summary>
         /// Converts degrees around a circle to a Point
@@ -41,20 +98,22 @@ namespace StepCounter.Charts.Pie
         }
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            canvas.ResetState();
+
+            var primaryColor = PrimaryColor; 
+            var backGroundColor = BackGroundColor;
+            canvas.FontColor = TextColor;
+
             int diameter = (int)System.Math.Min(dirtyRect.Width, dirtyRect.Height);
             int offset = diameter / 2;
-
-            canvas.ResetState();
             var radius = diameter + diameter / 4;
-            var purple = Color.FromRgba(178, 127, 255, 254);
-            var backGroundColor = Color.FromRgba(0, 0, 0, 255);
-            canvas.FontColor = Color.FromArgb("#7F2CF6");
             var center = new PointF(offset + dirtyRect.Center.X + offset / 2 + offset/5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5);
+
             //Draw Outer Circle 
             var radialGradientPaint = new RadialGradientPaint
             {
-                EndColor = purple,
-                StartColor = purple
+                EndColor = primaryColor,
+                StartColor = primaryColor
             };
 
             var radialRectangle = new RectF(dirtyRect.Center.X - radius, dirtyRect.Center.Y - radius, radius * 2, radius * 2);
@@ -73,16 +132,16 @@ namespace StepCounter.Charts.Pie
             canvas.SetFillPaint(radialGradientPaintInner, radialRectangleInner);
             canvas.FillCircle(center, radius-100);
 
-            canvas.StrokeColor = Colors.White;
+            canvas.StrokeColor = TextColor;
             canvas.FontSize = 96;
-            canvas.FontColor = Colors.White;
+            canvas.FontColor = TextColor;
             canvas.DrawString(Display== string.Empty || Display == "0" ? "Fetching..": Display,
                     offset + dirtyRect.Center.X + offset / 2 + offset / 5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5,
                    HorizontalAlignment.Center);
 
-            canvas.StrokeColor = Colors.White;
+            canvas.StrokeColor = TextColor;
             canvas.FontSize = 48;
-            canvas.FontColor = Colors.White;
+            canvas.FontColor = TextColor;
             canvas.DrawString(Display == string.Empty || Display == "0" ? "" : "Steps",
                     offset + dirtyRect.Center.X + offset / 2 + offset / 5, offset + dirtyRect.Center.Y + offset / 2 + offset / 5 + 50,
                    HorizontalAlignment.Center);

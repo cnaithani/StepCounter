@@ -17,10 +17,6 @@ public partial class MainPage : ContentPage
         {
             currentVM.Steps = e.Steps;
         });
-
-
-        
-
     }
 
     protected override void OnAppearing()
