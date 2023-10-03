@@ -100,7 +100,8 @@ namespace StepCounter.Charts.Pie
         {
             canvas.ResetState();
 
-            var primaryColor = PrimaryColor; 
+            var primaryColorLight = PrimaryColor.AddLuminosity((float).5);
+            var primaryColorDark = PrimaryColor.AddLuminosity((float)1);
             var backGroundColor = BackGroundColor;
             canvas.FontColor = TextColor;
 
@@ -112,8 +113,8 @@ namespace StepCounter.Charts.Pie
             //Draw Outer Circle 
             var radialGradientPaint = new RadialGradientPaint
             {
-                EndColor = primaryColor,
-                StartColor = primaryColor
+                EndColor = primaryColorLight,
+                StartColor = primaryColorLight
             };
 
             var radialRectangle = new RectF(dirtyRect.Center.X - radius, dirtyRect.Center.Y - radius, radius * 2, radius * 2);

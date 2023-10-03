@@ -41,36 +41,6 @@ namespace StepCounter.Charts.Pie
         }
 
 
-        public static readonly BindableProperty BackGroundColorProperty = BindableProperty.Create(nameof(BackGroundColor),
-        typeof(string),
-        typeof(PieChartGraphicsView),
-        "#ffffff");
-        public string BackGroundColor
-        {
-            get { return (string)GetValue(BackGroundColorProperty); }
-            set
-            {
-                SetValue(BackGroundColorProperty, value);
-                OnPropertyChanged(nameof(BackGroundColorProperty));
-
-            }
-        }
-
-        public static readonly BindableProperty PrimaryColorProperty = BindableProperty.Create(nameof(PrimaryColor),
-        typeof(string),
-        typeof(PieChartGraphicsView),
-        "#6101ee");
-        public string PrimaryColor
-        {
-            get { return (string)GetValue(PrimaryColorProperty); }
-            set
-            {
-                SetValue(PrimaryColorProperty, value);
-                OnPropertyChanged(nameof(PrimaryColorProperty));
-
-            }
-        }
-
         public static readonly BindableProperty PercentProperty = BindableProperty.Create(nameof(Percent),
         typeof(decimal),
         typeof(PieChartGraphicsView),
